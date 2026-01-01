@@ -1,0 +1,220 @@
+﻿<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0a0a0a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>MIXER</title>
+
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="assets/logos/icon-192.png" type="image/png" sizes="192x192">
+    <link rel="apple-touch-icon" href="assets/logos/icon-180.png" sizes="180x180">
+    <link rel="stylesheet" href="assets/fonts/vazirmatn.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="assets/i18n/fa.js" defer></script>
+    <script src="assets/i18n/en.js" defer></script>
+    <script src="assets/js/app.js" defer></script>
+</head>
+<body>
+    <header>
+        <div class="app-logo" aria-label="MIXER">
+            <img src="assets/logos/dark-logo.png" alt="MIXER" class="logo logo-dark">
+            <img src="assets/logos/light-logo.png" alt="MIXER" class="logo logo-light">
+        </div>
+    </header>
+
+    <main>
+        <section id="page-send" class="page active">
+            <div class="update-banner" data-update-banner style="display: none;"></div>
+            <div id="password-warning" class="warning-banner" data-i18n="warn_no_password" style="display: none;"></div>
+            <div class="alert-banner" data-alert-banner style="display: none;">
+                <div class="alert-message" data-alert-message></div>
+                <button type="button" class="alert-dismiss" data-alert-dismiss aria-label="Dismiss alert" title="Dismiss">
+                    ×
+                </button>
+            </div>
+
+            <div class="converter-box">
+                <div class="input-header">
+                    <label data-i18n="label_input">Input Text</label>
+                    <button class="paste-btn-mini" onclick="smartPaste('input-send', doEncode)">
+                        <svg viewBox="0 0 24 24"><path d="M19 2h-4.18C14.4.84 13.3 0 12 0c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm7 18H5V4h2v3h10V4h2v16z"/></svg>
+                        <span data-i18n="btn_paste">Paste</span>
+                    </button>
+                </div>
+
+                <div class="input-area">
+                    <textarea id="input-send" data-i18n-placeholder="ph_input" placeholder="Type here..." oninput="doEncode()"></textarea>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="output-area" id="output-area-send">
+                    <label data-i18n="label_output">Output (SMS Ready)</label>
+                    <textarea id="output-send" readonly dir="rtl" data-i18n-placeholder="ph_output" placeholder="Encoded output..."></textarea>
+                </div>
+
+                <div id="char-counter" class="char-counter grey">0/201</div>
+
+                <div id="copy-send-wrapper">
+                    <button class="action-btn" onclick="copyText('output-send')" data-i18n="btn_copy_output">
+                        Copy Output
+                    </button>
+                </div>
+
+                <div id="chunk-wrapper" class="chunk-wrapper" style="display:none;">
+                    <div id="chunk-list" class="chunk-list"></div>
+                    <button class="action-btn" onclick="copyAllChunks()" data-i18n="btn_copy_all">Copy All Parts</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="page-receive" class="page">
+            <div class="update-banner" data-update-banner style="display: none;"></div>
+            <div class="alert-banner" data-alert-banner style="display: none;">
+                <div class="alert-message" data-alert-message></div>
+                <button type="button" class="alert-dismiss" data-alert-dismiss aria-label="Dismiss alert" title="Dismiss">
+                    ×
+                </button>
+            </div>
+            <div class="converter-box">
+                <div class="input-header">
+                    <label data-i18n="label_received">Received SMS</label>
+                    <button class="paste-btn-mini" onclick="smartPaste('input-receive', doDecode)">
+                        <svg viewBox="0 0 24 24"><path d="M19 2h-4.18C14.4.84 13.3 0 12 0c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm7 18H5V4h2v3h10V4h2v16z"/></svg>
+                        <span data-i18n="btn_paste">Paste</span>
+                    </button>
+                </div>
+
+                <div class="input-area">
+                    <textarea id="input-receive" dir="rtl" data-i18n-placeholder="ph_paste_here" placeholder="Paste here..." oninput="doDecode()"></textarea>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="output-area">
+                    <label data-i18n="label_original">Original Message</label>
+                    <textarea id="output-receive" readonly dir="auto" style="text-align: left;" data-i18n-placeholder="ph_original" placeholder="Original text..."></textarea>
+                </div>
+
+                <button class="action-btn" onclick="copyText('output-receive')" data-i18n="btn_copy_original">
+                    Copy Original
+                </button>
+            </div>
+        </section>
+
+        <section id="page-settings" class="page">
+            <div class="update-banner" data-update-banner style="display: none;"></div>
+            <div class="alert-banner" data-alert-banner style="display: none;">
+                <div class="alert-message" data-alert-message></div>
+                <button type="button" class="alert-dismiss" data-alert-dismiss aria-label="Dismiss alert" title="Dismiss">
+                    ×
+                </button>
+            </div>
+            <div class="converter-box status-box">
+                <div class="setting-row">
+                    <div class="setting-label" data-i18n="setting_connection">Connection</div>
+                    <div class="setting-value">
+                        <span id="connection-status" class="status-badge online" data-i18n="status_online">Online</span>
+                    </div>
+                </div>
+                <div class="setting-row">
+                    <div class="setting-label" data-i18n="setting_version">Version</div>
+                    <div class="setting-value" id="version-value">--</div>
+                </div>
+            </div>
+            <div class="converter-box">
+                <div class="setting-row">
+                    <div class="setting-label" data-i18n="setting_theme">Theme</div>
+                    <select id="theme-selector" onchange="changeTheme(this.value)">
+                        <option value="light" data-i18n="theme_light">Light</option>
+                        <option value="dark" data-i18n="theme_dark">Dark</option>
+                        <option value="system" data-i18n="theme_system">System</option>
+                    </select>
+                </div>
+
+                <div class="setting-row">
+                    <div class="setting-label" data-i18n="setting_lang">Language</div>
+                    <select id="lang-selector" onchange="changeLanguage(this.value)">
+                        <option value="fa" data-i18n="lang_fa">فارسی</option>
+                        <option value="en" data-i18n="lang_en">English</option>
+                    </select>
+                </div>
+
+                <div class="setting-row">
+                    <div class="setting-label" data-i18n="setting_chunking">ارسال چندتکه</div>
+                    <button id="chunking-toggle" class="toggle-btn" type="button" onclick="toggleChunking()">فعال</button>
+                </div>
+            </div>
+
+            <div class="converter-box" style="margin-top: 12px;">
+                <div class="setting-row">
+                    <input id="password-value" type="text" placeholder="Shared password..." oninput="updatePassword(this.value)" style="flex:1;background:var(--input-bg);color:var(--text-primary);border:1px solid var(--border-color);padding:8px 12px;border-radius:10px;font-size:0.9rem;text-align:center;" data-i18n-placeholder="ph_password">
+                </div>
+            </div>
+
+            <div class="converter-box" style="margin-top: 12px;">
+                <div style="padding: 11px 20px 11px 20px;">
+                    <input id="pin-value" type="text" inputmode="numeric" pattern="[0-9]*" placeholder="Set PIN" data-i18n-placeholder="setting_pin_placeholder" oninput="updatePinFromSettings(this.value)" style="width:100%;background:var(--input-bg);color:var(--text-primary);border:1px solid var(--border-color);padding:8px 12px;border-radius:10px;font-size:0.9rem;text-align:center;">
+                </div>
+            </div>
+
+            <div class="panic-wrapper">
+                <button type="button" class="panic-btn" data-i18n="btn_panic"
+                    onpointerdown="startPanicHold(event)"
+                    onpointerup="endPanicHold()"
+                    onpointerleave="endPanicHold()"
+                    ontouchstart="startPanicHold(event)"
+                    ontouchend="endPanicHold()"
+                >خروج اضطراری</button>
+            </div>
+
+            <div class="converter-box" style="margin-top: 12px;">
+                <div class="setting-row">
+                    <div class="setting-label" data-i18n="faq_title">راهنما / سوالات متداول</div>
+                </div>
+                <div id="faq-list" class="faq-box"></div>
+            </div>
+            <div class="refresh-wrapper">
+                <button type="button" class="refresh-btn"
+                    onpointerdown="startRefreshHold(event)"
+                    onpointerup="endRefreshHold()"
+                    onpointerleave="endRefreshHold()"
+                    ontouchstart="startRefreshHold(event)"
+                    ontouchend="endRefreshHold()"
+                    data-i18n="btn_refresh">بروزرسانی</button>
+            </div>
+
+        </section>
+    </main>
+
+    <nav class="bottom-nav">
+        <button class="nav-item active" onclick="switchTab(event, 'send')">
+            <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+            <span data-i18n="nav_send">Send</span>
+        </button>
+        <button class="nav-item" onclick="switchTab(event, 'settings')">
+            <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59-.24-1.13-.56-1.62-.94l-2.39-.96c-.22-.08-.47 0-.59.22L3.15 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+            <span data-i18n="nav_settings">Settings</span>
+        </button>
+        <button class="nav-item" onclick="switchTab(event, 'receive')">
+            <svg viewBox="0 0 24 24" class="flip-x"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+            <span data-i18n="nav_receive">Receive</span>
+        </button>
+    </nav>
+
+    <div id="toast" class="toast" data-i18n="toast_copied"></div>
+    <div id="panic-overlay" class="panic-overlay"></div>
+    <div id="refresh-overlay" class="refresh-overlay"></div>
+
+    <div id="lock-overlay" class="lock-overlay" style="display:none;">
+        <div class="lock-card">
+            <div data-i18n="lock_enter_title">Enter PIN</div>
+                <input id="unlock-pin" type="text" placeholder="Enter PIN" data-i18n-placeholder="lock_enter_placeholder" readonly>
+            <div class="pin-keypad" id="pin-keypad"></div>
+        </div>
+    </div>
+</body>
+</html>
