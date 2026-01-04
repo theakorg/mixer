@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
@@ -138,15 +138,28 @@
                 <div class="setting-row">
                     <div class="setting-label" data-i18n="setting_lang">Language</div>
                     <select id="lang-selector" onchange="changeLanguage(this.value)">
-                        <option value="fa" data-i18n="lang_fa">فارسی</option>
+                        <option value="fa" data-i18n="lang_fa">Persian</option>
                         <option value="en" data-i18n="lang_en">English</option>
                     </select>
                 </div>
+
+            <div class="setting-row">
+                <div class="setting-label" data-i18n="setting_pattern">Encryption Pattern</div>
+                <select id="pattern-selector">
+                    <option value="default" data-i18n="pattern_default">Default</option>
+                    <option value="sms-mini" data-i18n="pattern_sms_mini">SMS Mini</option>
+                    <option value="zwc" data-i18n="pattern_zwc">ZWC Hidden</option>
+                    <option value="sentence" data-i18n="pattern_sentence">Sentence</option>
+                    <option value="sms-stealth" data-i18n="pattern_sms_stealth">Nam Nam</option>
+                    <option value="emoji" data-i18n="pattern_emoji">Emoji</option>
+                </select>
+            </div>
 
                 <div class="setting-row">
                     <div class="setting-label" data-i18n="setting_chunking">ارسال چندتکه</div>
                     <button id="chunking-toggle" class="toggle-btn" type="button" onclick="toggleChunking()">فعال</button>
                 </div>
+
             </div>
 
             <div class="converter-box" style="margin-top: 12px;">
@@ -157,23 +170,13 @@
 
             <div class="converter-box" style="margin-top: 12px;">
                 <div style="padding: 11px 20px 11px 20px;">
-                    <input id="pin-value" type="text" inputmode="numeric" pattern="[0-9]*" placeholder="Set PIN" data-i18n-placeholder="setting_pin_placeholder" oninput="updatePinFromSettings(this.value)" style="width:100%;background:var(--input-bg);color:var(--text-primary);border:1px solid var(--border-color);padding:8px 12px;border-radius:10px;font-size:0.9rem;text-align:center;">
+                    <input id="pin-value" type="text" inputmode="numeric" pattern="[0-9]*" placeholder="Set PIN" data-i18n-placeholder="setting_pin_placeholder" oninput="updatePinFromSettings(this.value)" lang="en" dir="ltr" style="width:100%;background:var(--input-bg);color:var(--text-primary);border:1px solid var(--border-color);padding:8px 12px;border-radius:10px;font-size:0.9rem;text-align:center;direction:ltr;">
                 </div>
-            </div>
-
-            <div class="panic-wrapper">
-                <button type="button" class="panic-btn" data-i18n="btn_panic"
-                    onpointerdown="startPanicHold(event)"
-                    onpointerup="endPanicHold()"
-                    onpointerleave="endPanicHold()"
-                    ontouchstart="startPanicHold(event)"
-                    ontouchend="endPanicHold()"
-                >خروج اضطراری</button>
             </div>
 
             <div class="converter-box" style="margin-top: 12px;">
                 <div class="setting-row">
-                    <div class="setting-label" data-i18n="faq_title">راهنما / سوالات متداول</div>
+                    <div class="setting-label" data-i18n="faq_title">Help / FAQ</div>
                 </div>
                 <div id="faq-list" class="faq-box"></div>
             </div>
@@ -184,7 +187,17 @@
                     onpointerleave="endRefreshHold()"
                     ontouchstart="startRefreshHold(event)"
                     ontouchend="endRefreshHold()"
-                    data-i18n="btn_refresh">بروزرسانی</button>
+                    data-i18n="btn_refresh">Mixer Update</button>
+            </div>
+
+            <div class="panic-wrapper">
+                <button type="button" class="panic-btn" data-i18n="btn_panic"
+                    onpointerdown="startPanicHold(event)"
+                    onpointerup="endPanicHold()"
+                    onpointerleave="endPanicHold()"
+                    ontouchstart="startPanicHold(event)"
+                    ontouchend="endPanicHold()"
+                >Emergency Exit</button>
             </div>
 
         </section>
