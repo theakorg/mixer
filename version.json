@@ -1,12 +1,12 @@
 {
-  "version": "1.1.0",
-  "vid": "019b87e9-3719-7f6a-a1dc-4e8a67c1a2d8",
+  "version": "1.1.1",
+  "vid": "019b9baa-78e7-7193-b77c-22d8797d04ce",
   "title": {
-    "fa": "",
-    "en": ""
-  },
-  "description": {
     "fa": "... میکسر آپدیت شد ؛ همین الان آپدیتش کن ...",
     "en": "... Mixer Has Been Updated ; Update It Now ..."
+  },
+  "description": {
+    "fa": "با این بروزرسانی میتونین لوکیشنتونو به صورت امن بفرستین ؛ از تنظیمات میکسر رو بروزش کن",
+    "en": "With This Update, You Can Send Your Location Securely ; Update Mixer From The Settings"
   }
 }
