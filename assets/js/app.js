@@ -56,6 +56,7 @@
     let refreshHoldInterval = null;
     let refreshRemaining = 0;
     let refreshInProgress = false;
+    let locationInProgress = false;
     let connectionWatchTimer = null;
     const STATUS_ONLINE = 'online';
     const STATUS_OFFLINE = 'offline';
@@ -2526,6 +2527,14 @@ CODE: {code}
             if (translations[key]) el.placeholder = translations[key];
         });
 
+        document.querySelectorAll('[data-i18n-label]').forEach((el) => {
+            const key = el.getAttribute('data-i18n-label');
+            if (translations[key]) {
+                el.setAttribute('aria-label', translations[key]);
+                el.setAttribute('title', translations[key]);
+            }
+        });
+
         const chunkingToggle = document.getElementById('chunking-toggle');
         if (chunkingToggle) updateChunkToggleText(chunkingToggle, chunkingEnabled);
         renderFaq(translations);
@@ -2592,6 +2601,69 @@ CODE: {code}
         } else {
             showToast(t('toast_paste_manual'));
         }
+    }
+
+    function formatLocationValue(position) {
+        const coords = position?.coords;
+        const lat = coords?.latitude;
+        const lng = coords?.longitude;
+        if (!Number.isFinite(lat) || !Number.isFinite(lng)) return '';
+        return `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+    }
+
+    function setLocationButtonState(btn, isLoading) {
+        if (!btn) return;
+        btn.classList.toggle('is-loading', !!isLoading);
+        btn.disabled = !!isLoading;
+        btn.setAttribute('aria-busy', String(!!isLoading));
+    }
+
+    async function insertLocation(targetId, callback, buttonEl) {
+        const el = document.getElementById(targetId);
+        const btn = buttonEl instanceof Element ? buttonEl : null;
+        if (!el || locationInProgress) return;
+        if (!navigator.geolocation) {
+            showToast(t('toast_location_unavailable'));
+            return;
+        }
+        locationInProgress = true;
+        setLocationButtonState(btn, true);
+        el.focus();
+        if (navigator.permissions?.query) {
+            try {
+                const result = await navigator.permissions.query({ name: 'geolocation' });
+                if (result.state === 'denied') {
+                    locationInProgress = false;
+                    setLocationButtonState(btn, false);
+                    showToast(t('toast_location_blocked'));
+                    return;
+                }
+            } catch (e) {}
+        }
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const value = formatLocationValue(position);
+                locationInProgress = false;
+                setLocationButtonState(btn, false);
+                if (!value) {
+                    showToast(t('toast_location_failed'));
+                    return;
+                }
+                el.value = value;
+                if (typeof callback === 'function') callback();
+                showToast(t('toast_location_set'));
+            },
+            (error) => {
+                locationInProgress = false;
+                setLocationButtonState(btn, false);
+                const code = error && typeof error.code === 'number' ? error.code : 0;
+                if (code === 1) showToast(t('toast_location_denied'));
+                else if (code === 2) showToast(t('toast_location_unavailable'));
+                else if (code === 3) showToast(t('toast_location_timeout'));
+                else showToast(t('toast_location_failed'));
+            },
+            { enableHighAccuracy: false, timeout: 10000, maximumAge: 0 }
+        );
     }
 
     function copyText(elementId) {
@@ -3377,6 +3449,7 @@ CODE: {code}
     window.doEncode = doEncode;
     window.doDecode = doDecode;
     window.smartPaste = smartPaste;
+    window.insertLocation = insertLocation;
     window.copyText = copyText;
     window.switchTab = switchTab;
     window.changeLanguage = changeLanguage;
