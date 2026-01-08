@@ -39,10 +39,19 @@
             <div class="converter-box">
                 <div class="input-header">
                     <label data-i18n="label_input">Input Text</label>
-                    <button class="paste-btn-mini" onclick="smartPaste('input-send', doEncode)">
-                        <svg viewBox="0 0 24 24"><path d="M19 2h-4.18C14.4.84 13.3 0 12 0c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm7 18H5V4h2v3h10V4h2v16z"/></svg>
-                        <span data-i18n="btn_paste">Paste</span>
-                    </button>
+                    <div class="input-actions">
+                        <button class="paste-btn-mini" onclick="smartPaste('input-send', doEncode)">
+                            <svg viewBox="0 0 24 24"><path d="M19 2h-4.18C14.4.84 13.3 0 12 0c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm7 18H5V4h2v3h10V4h2v16z"/></svg>
+                            <span data-i18n="btn_paste">Paste</span>
+                        </button>
+                        <button class="paste-btn-mini icon-btn-mini" type="button" onclick="insertLocation('input-send', doEncode, this)" data-i18n-label="btn_location" aria-label="Location" title="Location">
+                            <svg class="icon-location" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c-3.86 0-7 3.14-7 7 0 5.25 7 13 7 13s7-7.75 7-13c0-3.86-3.14-7-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>
+                            <svg class="icon-spinner" viewBox="0 0 24 24" aria-hidden="true">
+                                <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" fill="none" opacity="0.35"></circle>
+                                <path d="M12 3a9 9 0 0 1 9 9" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
 
                 <div class="input-area">
@@ -231,4 +240,3 @@
     </div>
 </body>
 </html>
-
