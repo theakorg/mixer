@@ -180,6 +180,12 @@ main {
     padding: 12px 15px 0 15px;
 }
 
+.input-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
 .input-area,
 .output-area {
     padding: 15px;
@@ -225,6 +231,36 @@ label {
     gap: 6px;
     transition: all 0.2s;
     font-weight: 500;
+}
+
+.icon-btn-mini {
+    padding: 6px;
+    width: 30px;
+    height: 30px;
+    justify-content: center;
+}
+
+.icon-btn-mini svg {
+    width: 16px;
+    height: 16px;
+}
+
+.icon-btn-mini .icon-spinner {
+    display: none;
+}
+
+.icon-btn-mini.is-loading .icon-location {
+    display: none;
+}
+
+.icon-btn-mini.is-loading .icon-spinner {
+    display: block;
+    animation: spin 0.85s linear infinite;
+}
+
+.icon-btn-mini[disabled] {
+    cursor: default;
+    opacity: 0.6;
 }
 
 .paste-btn-mini:active {
@@ -666,6 +702,11 @@ select {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 
 .toast {
